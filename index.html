@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fbf7f0" />
+    <meta name="description" content="Тёплая пицца из печи — закажи любимую в пиццерии Тесто." />
+    <title>Тесто — пицца рядом</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Тесто — на главную"><span class="brand-symbol">т</span>тесто<span class="brand-dot">.</span></a>
+      <nav class="main-nav" aria-label="Навигация">
+        <a href="#menu">Меню</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+      <div class="header-right">
+        <a class="phone-link" href="tel:+78005553535">8 800 555-35-35</a>
+        <button class="cart-button" id="open-cart" aria-label="Открыть корзину">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h2l2.1 10.2a2 2 0 0 0 2 1.6h7.5a2 2 0 0 0 1.9-1.4L21 9H7"></path><circle cx="10" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle></svg>
+          <span>Корзина</span><b id="cart-count">0</b>
+        </button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <h1>Хороший вечер<br />начинается <em>с теста.</em></h1>
+          <a class="primary-button" href="#menu">Выбрать пиццу <span>↘</span></a>
+        </div>
+        <div class="hero-image-wrap">
+          <img class="hero-image" src="https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=1100&q=85" alt="Свежая пицца с томатами и базиликом" />
+        </div>
+      </section>
+
+      <section class="menu-section" id="menu">
+        <div class="section-heading">
+          <h2>Наша <em>пицца</em></h2>
+        </div>
+        <div class="menu-toolbar">
+          <div class="category-tabs" id="category-tabs" aria-label="Категории пиццы"></div>
+        </div>
+        <div class="pizza-grid" id="pizza-grid"></div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer" id="contacts">
+      <a class="brand footer-brand" href="#top"><span class="brand-symbol">т</span>тесто<span class="brand-dot">.</span></a>
+      <a class="footer-phone" href="tel:+78005553535">8 800 555-35-35</a>
+    </footer>
+
+    <div class="cart-overlay" id="cart-overlay" hidden>
+      <section class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+        <div class="cart-heading"><h2 id="cart-title">Твоя корзина</h2><button id="close-cart" aria-label="Закрыть корзину">×</button></div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-empty" id="cart-empty">Пока здесь пусто — самое время выбрать пиццу.</div>
+        <div class="cart-total" id="cart-total" hidden><span>Итого</span><strong id="total-price"></strong></div>
+        <button class="checkout-button" id="checkout-button" hidden>Оформить заказ <span>↗</span></button>
+      </section>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
