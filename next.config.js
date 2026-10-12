@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
+const basePath = process.env.GITHUB_PAGES === "true" ? "/pi44a" : "";
 const nextConfig = {
-  serverExternalPackages: ["better-sqlite3"],
-  outputFileTracingIncludes: {
-    "/*": ["./data/pizzeria.db"],
+  output: "export",
+  basePath,
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
   },
 };
 

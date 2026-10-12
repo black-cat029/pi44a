@@ -1,14 +1,44 @@
 "use client";
 
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { CartDrawer } from "./cart-drawer";
 
 const StoreContext = createContext(null);
+const CART_STORAGE_KEY = "testo-pizza-cart";
+
+function isCart(items) {
+  return Array.isArray(items) && items.every((item) =>
+    Number.isSafeInteger(item.id)
+    && item.id > 0
+    && typeof item.name === "string"
+    && typeof item.category === "string"
+    && Number.isSafeInteger(item.price)
+    && item.price > 0
+    && typeof item.image === "string"
+    && Number.isSafeInteger(item.quantity)
+    && item.quantity > 0
+  );
+}
 
 export function StoreProvider({ children }) {
   const [cart, setCart] = useState([]);
+  const [cartLoaded, setCartLoaded] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [toast, setToast] = useState("");
+
+  useEffect(() => {
+    const storedCart = window.localStorage.getItem(CART_STORAGE_KEY);
+    if (storedCart !== null) {
+      const parsedCart = JSON.parse(storedCart);
+      if (!isCart(parsedCart)) throw new Error("В сохранённой корзине найдены неверные данные.");
+      setCart(parsedCart);
+    }
+    setCartLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (cartLoaded) window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  }, [cart, cartLoaded]);
 
   const showToast = useCallback((message) => {
     setToast(message);
