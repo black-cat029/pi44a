@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --ink: #34251e;
   --muted: #8a7a6d;
@@ -50,7 +54,7 @@ h1 em, h2 em { color: var(--tomato); font-style: normal; }
 .section-heading h2 { margin: 0; font: 700 clamp(30px, 3.3vw, 40px)/1.15 var(--font-display); letter-spacing: -.065em; }
 .menu-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 17px; padding-bottom: 11px; border-bottom: 1px solid var(--line); }
 .category-tabs { display: flex; flex-wrap: wrap; gap: 7px; }
-.category-tab { padding: 7px 12px; border: 1px solid transparent; background: transparent; color: #88796d; font-size: 10px; cursor: pointer; transition: all .18s; }
+.category-tab { display: inline-flex; align-items: center; padding: 7px 12px; border: 1px solid transparent; background: transparent; color: #88796d; font-size: 10px; cursor: pointer; transition: all .18s; }
 .category-tab:hover { border-color: #e7dacc; color: var(--ink); }
 .category-tab.active { border-color: var(--ink); background: var(--ink); color: white; }
 .pizza-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 23px 17px; }
@@ -68,6 +72,15 @@ h1 em, h2 em { color: var(--tomato); font-style: normal; }
 .pizza-card-bottom button:hover { color: #713421; }
 .pizza-card-bottom button b { display: grid; width: 19px; height: 19px; place-items: center; border-radius: 50%; background: #f0e5d8; font-size: 13px; transition: background .2s; }
 .pizza-card-bottom button:hover b { background: #e8d3bf; }
+.pizza-card-bottom button b svg { display: block; }
+.empty-category { padding: 35px 0; color: var(--muted); font-size: 13px; }
+.pagination { display: flex; align-items: center; justify-content: center; gap: 17px; margin-top: 37px; }
+.page-numbers { display: flex; align-items: center; gap: 6px; }
+.page-link { display: inline-flex; min-width: 34px; height: 34px; align-items: center; justify-content: center; gap: 5px; border: 1px solid transparent; color: #88796d; font-size: 11px; transition: border-color .18s, background .18s, color .18s; }
+.page-link:hover { border-color: #e7dacc; color: var(--ink); }
+.page-link.active { border-color: var(--ink); background: var(--ink); color: white; }
+.page-arrow { padding: 0 9px; }
+.page-link.disabled { color: #c4b9ae; pointer-events: none; }
 
 .site-footer { display: flex; align-items: center; justify-content: space-between; min-height: 78px; padding: 16px max(calc((100% - 1160px) / 2), 6%); background: #f1ebe1; }
 .footer-brand { font-size: 20px; }
@@ -130,6 +143,10 @@ h1 em, h2 em { color: var(--tomato); font-style: normal; }
   .menu-toolbar { align-items: center; gap: 8px; }
   .category-tabs { gap: 3px; }
   .category-tab { padding: 7px 9px; font-size: 9px; }
+  .pagination { gap: 7px; margin-top: 29px; }
+  .page-numbers { gap: 2px; }
+  .page-link { min-width: 30px; height: 32px; }
+  .page-arrow { padding: 0 5px; }
   .pizza-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 21px 11px; }
   .pizza-photo { aspect-ratio: 1.12; }
   .pizza-title-row { align-items: baseline; }

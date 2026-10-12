@@ -1,0 +1,24 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "npm: dev",
+      "type": "shell",
+      "command": "npm.cmd",
+      "args": ["run", "dev"],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "nextjs",
+        "pattern": {
+          "regexp": "^(.*)$",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^> next dev",
+          "endsPattern": "Ready in"
+        }
+      }
+    }
+  ]
+}
