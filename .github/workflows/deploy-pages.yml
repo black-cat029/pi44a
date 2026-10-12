@@ -47,6 +47,16 @@ jobs:
         with:
           path: ./out
 
+      - name: Make GitHub Pages static-export routes accessible
+        shell: bash
+        run: |
+          while IFS= read -r -d '' html_file; do
+            directory="$(dirname "$html_file")"
+            route="$(basename "$directory")"
+            cp "$html_file" "$directory.txt"
+            printf '%s\n' "$route" >> ./out/.nojekyll
+          done < <(find ./out -mindepth 2 -type f -name '*.html' -print0)
+
       - name: Deploy static site
         id: deployment
         uses: actions/deploy-pages@v4
