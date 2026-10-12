@@ -7,7 +7,6 @@
     "predev": "npm run db:seed",
     "build": "next build",
     "prebuild": "npm run db:seed",
-    "start": "next start --hostname 0.0.0.0 --port 8080",
     "db:seed": "node db/seed.js"
   },
   "dependencies": {

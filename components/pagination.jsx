@@ -8,7 +8,7 @@ function pageHref(page, category) {
   return `${basePath}/?${params.toString()}#menu`;
 }
 
-export function Pagination({ currentPage, totalPages, category }) {
+export function Pagination({ currentPage, totalPages, category, onNavigate }) {
   if (totalPages <= 1) return null;
 
   const firstPage = Math.max(1, currentPage - 2);
@@ -26,6 +26,7 @@ export function Pagination({ currentPage, totalPages, category }) {
         aria-label="Предыдущая страница"
         aria-disabled={currentPage === 1}
         tabIndex={currentPage === 1 ? -1 : undefined}
+        onClick={(event) => onNavigate(event, category, Math.max(1, currentPage - 1))}
       >
         <ChevronLeft size={15} aria-hidden="true" /><span>Назад</span>
       </a>
@@ -36,6 +37,7 @@ export function Pagination({ currentPage, totalPages, category }) {
             className={cn("page-link", page === currentPage && "active")}
             href={pageHref(page, category)}
             aria-current={page === currentPage ? "page" : undefined}
+            onClick={(event) => onNavigate(event, category, page)}
           >
             {page}
           </a>
@@ -47,6 +49,7 @@ export function Pagination({ currentPage, totalPages, category }) {
         aria-label="Следующая страница"
         aria-disabled={currentPage === totalPages}
         tabIndex={currentPage === totalPages ? -1 : undefined}
+        onClick={(event) => onNavigate(event, category, Math.min(totalPages, currentPage + 1))}
       >
         <span>Вперёд</span><ChevronRight size={15} aria-hidden="true" />
       </a>
