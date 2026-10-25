@@ -12,7 +12,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const sqlite = process.env.NODE_ENV === "production"
-  ? new Database(databasePath, { readonly: true, fileMustExist: true })
+  ? new Database(databasePath, { fileMustExist: true })
   : new Database(databasePath);
 const db = drizzle(sqlite, { schema });
 

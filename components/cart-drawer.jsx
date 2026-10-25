@@ -3,6 +3,7 @@
 import { Minus, Plus, X } from "lucide-react";
 import { useEffect } from "react";
 import { useStore } from "./StoreProvider";
+import { getPizzaImageSrc } from "../lib/pizza-image";
 
 const formatPrice = (price) => `${new Intl.NumberFormat("ru-RU").format(price)} ₽`;
 
@@ -32,7 +33,7 @@ export function CartDrawer() {
         <div className="cart-items">
           {cart.map((item) => (
             <div className="cart-item" key={item.id}>
-              <img src={`https://images.unsplash.com/${item.image}?auto=format&fit=crop&w=160&q=75`} alt="" />
+              <img src={getPizzaImageSrc(item.image)} alt="" />
               <div className="cart-item-info"><strong>{item.name}</strong><span>{formatPrice(item.price)}</span>
                 <div className="quantity-control">
                   <button type="button" onClick={() => changeQuantity(item.id, -1)} aria-label={`Уменьшить количество пиццы «${item.name}»`}><Minus size={12} /></button>

@@ -4,8 +4,7 @@ import { cn } from "../lib/utils";
 function pageHref(page, category) {
   const params = new URLSearchParams({ page: String(page) });
   if (category !== "Все") params.set("category", category);
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-  return `${basePath}/?${params.toString()}#menu`;
+  return `/?${params.toString()}#menu`;
 }
 
 export function Pagination({ currentPage, totalPages, category, onNavigate }) {

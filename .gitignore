@@ -4,4 +4,5 @@ node_modules/
 data/*.db
 data/*.db-shm
 data/*.db-wal
+/public/pizzas/uploads/
 npm-debug.log*

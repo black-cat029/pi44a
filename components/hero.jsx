@@ -6,7 +6,7 @@ export function Hero() {
         <a className="primary-button" href="#menu">Выбрать пиццу <span>↘</span></a>
       </div>
       <div className="hero-image-wrap">
-        <img className="hero-image" src="https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=1100&q=85" alt="Свежая пицца с томатами и базиликом" />
+        <img className="hero-image" src="/pizzas/margherita.jpg" alt="Свежая пицца «Маргарита» с томатами и базиликом" />
       </div>
     </section>
   );
