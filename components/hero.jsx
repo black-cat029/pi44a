@@ -1,5 +1,7 @@
 "use client";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 export function Hero() {
   function handleChoosePizza(event) {
     const menu = document.getElementById("menu");
@@ -17,7 +19,7 @@ export function Hero() {
         <a className="primary-button" href="#menu" onClick={handleChoosePizza}>Выбрать пиццу <span>↘</span></a>
       </div>
       <div className="hero-image-wrap">
-        <img className="hero-image" src="/pizzas/margherita.jpg" alt="Свежая пицца «Маргарита» с томатами и базиликом" />
+        <img className="hero-image" src={`${basePath}/pizzas/margherita.jpg`} alt="Свежая пицца «Маргарита» с томатами и базиликом" />
       </div>
     </section>
   );

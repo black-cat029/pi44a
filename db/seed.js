@@ -1,4 +1,5 @@
 const path = require("node:path");
+const { randomUUID } = require("node:crypto");
 const Database = require("better-sqlite3");
 const { drizzle } = require("drizzle-orm/better-sqlite3");
 const { sql } = require("drizzle-orm");
@@ -20,11 +21,11 @@ const products = [
   ["Моцарелла", "Сырная", 700, "/pizzas/mozzarella.jpg"],
   ["Острая салями", "Мясная", 730, "/pizzas/spicy-salami.jpg"],
   ["Шпинат и сыр", "Сырная", 710, "/pizzas/spinach-cheese.jpg"],
-  ["Цезарь", "Мясная", 760, "/pizzas/caesar.jpg"],
+  ["Цезарь", "Мясная", 760, "/pizzas/cheesy-chicken.jpg"],
   ["Мексиканская", "Мясная", 790, "/pizzas/mexican.jpg"],
   ["Четыре сезона", "Авторская", 780, "/pizzas/four-seasons.jpg"],
   ["Неаполитана", "Классика", 680, "/pizzas/neapolitan.jpg"],
-  ["Сырный цыплёнок", "Мясная", 750, "/pizzas/cheesy-chicken.jpg"],
+  ["Сырный цыплёнок", "Мясная", 750, "/pizzas/caesar.jpg"],
   ["Морская", "Морская", 890, "/pizzas/seafood.jpg"],
   ["Капричоза", "Авторская", 740, "/pizzas/capricciosa.jpg"],
   ["Песто", "Овощная", 710, "/pizzas/pesto.jpg"],
@@ -58,18 +59,25 @@ sqlite.exec(`
 `);
 
 const db = drizzle(sqlite);
-db.insert(pizzas)
-  .values(products)
-  .onConflictDoUpdate({
-    target: pizzas.id,
-    set: {
-      name: sql`excluded.name`,
-      category: sql`excluded.category`,
-      price: sql`excluded.price`,
-      image: sql`excluded.image`,
-    },
-  })
-  .run();
+const moveImagesTemporarily = sqlite.prepare("UPDATE pizzas SET image = ? WHERE id = ?");
+sqlite.transaction(() => {
+  for (const { id } of products) {
+    moveImagesTemporarily.run(`/seed-swap/${randomUUID()}`, id);
+  }
+
+  db.insert(pizzas)
+    .values(products)
+    .onConflictDoUpdate({
+      target: pizzas.id,
+      set: {
+        name: sql`excluded.name`,
+        category: sql`excluded.category`,
+        price: sql`excluded.price`,
+        image: sql`excluded.image`,
+      },
+    })
+    .run();
+})();
 
 sqlite.close();
 console.log(`Готово: в базе данных ${products.length} пицц.`);

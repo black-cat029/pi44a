@@ -161,32 +161,3 @@ h1 em, h2 em { color: var(--tomato); font-style: normal; }
   .main-nav a { font-size: 8px; }
   .pizza-title-row h3 { font-size: 11px; }
 }
-
-.management-toggle { flex-shrink: 0; padding: 7px 12px; border: 1px solid #e7dacc; background: transparent; color: #76675c; font-size: 10px; cursor: pointer; transition: border-color .18s, background .18s, color .18s; }
-.management-toggle:hover, .management-toggle.active { border-color: var(--ink); background: var(--ink); color: white; }
-.pizza-management { margin: 0 0 22px; padding: 18px; border: 1px solid var(--line); background: var(--white); }
-.pizza-management h3 { margin: 0 0 13px; font: 700 15px var(--font-display); }
-.pizza-create-form { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-items: end; }
-.pizza-create-form label { display: grid; gap: 6px; color: var(--muted); font-size: 10px; }
-.pizza-create-form input, .pizza-create-form select { width: 100%; min-width: 0; min-height: 36px; padding: 7px 9px; border: 1px solid #e6d9cb; border-radius: 2px; background: var(--paper); color: var(--ink); font: 11px var(--font-body); }
-.pizza-create-form input[type="file"] { padding: 6px; font-size: 9px; }
-.pizza-create-submit { min-height: 36px; padding: 8px 12px; border: 0; background: var(--tomato); color: white; font-size: 10px; font-weight: 600; cursor: pointer; transition: background .18s; }
-.pizza-create-submit:hover { background: var(--tomato-dark); }
-.pizza-create-submit:disabled { opacity: .65; cursor: wait; }
-.pizza-form-error, .management-message { grid-column: 1 / -1; margin: 0; color: var(--tomato-dark); font-size: 11px; }
-.management-message { margin-top: 12px; color: var(--olive); }
-.pizza-card-bottom.manage-mode { justify-content: space-between; align-items: center; }
-.pizza-card-bottom .pizza-remove-button { padding: 4px 7px; border: 1px solid #e6d9cb; border-radius: 2px; color: #8b4a3a; }
-.pizza-card-bottom .pizza-remove-button:hover { border-color: var(--tomato); color: var(--tomato-dark); }
-.pizza-card-bottom .pizza-remove-button:disabled { opacity: .6; cursor: wait; }
-
-@media (max-width: 760px) {
-  .menu-toolbar { flex-wrap: wrap; }
-  .management-toggle { margin-left: auto; }
-  .pizza-create-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-@media (max-width: 420px) {
-  .pizza-management { padding: 13px; }
-  .pizza-create-form { grid-template-columns: 1fr; }
-}

@@ -1,69 +1,61 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ProductCard } from "./product-card";
 import { Pagination } from "./pagination";
-import { PizzaCreateForm } from "./pizza-create-form";
 
 const PAGE_SIZE = 4;
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 function catalogHref(category, page) {
   const params = new URLSearchParams();
   if (category !== "Все") params.set("category", category);
   if (page !== 1) params.set("page", String(page));
   const query = params.size ? `?${params.toString()}` : "";
-  return `/${query}#menu`;
+  return `${basePath}/${query}#menu`;
 }
 
 export function ProductCatalog({
   pizzas,
   categories,
-  activeCategory,
-  currentPage,
-  totalItems,
-  totalPages,
 }) {
-  const router = useRouter();
-  const [managementOpen, setManagementOpen] = useState(false);
-  const [deletingId, setDeletingId] = useState(null);
-  const [managementMessage, setManagementMessage] = useState("");
+  const [activeCategory, setActiveCategory] = useState("Все");
+  const [selectedPage, setSelectedPage] = useState(1);
+  const filteredPizzas = useMemo(
+    () => activeCategory === "Все" ? pizzas : pizzas.filter((pizza) => pizza.category === activeCategory),
+    [activeCategory, pizzas],
+  );
+  const totalPages = Math.max(1, Math.ceil(filteredPizzas.length / PAGE_SIZE));
+  const currentPage = Math.min(selectedPage, totalPages);
+  const visiblePizzas = filteredPizzas.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  const syncLocation = useCallback(() => {
+    const params = new URLSearchParams(window.location.search);
+    const requestedCategory = params.get("category") || "Все";
+    const category = categories.includes(requestedCategory) ? requestedCategory : "Все";
+    const categoryItems = category === "Все" ? pizzas : pizzas.filter((pizza) => pizza.category === category);
+    const pageCount = Math.max(1, Math.ceil(categoryItems.length / PAGE_SIZE));
+    const requestedPage = Number(params.get("page"));
+    const page = Number.isSafeInteger(requestedPage) && requestedPage > 0
+      ? Math.min(requestedPage, pageCount)
+      : 1;
+    setActiveCategory(category);
+    setSelectedPage(page);
+  }, [categories, pizzas]);
+
+  useEffect(() => {
+    syncLocation();
+    window.addEventListener("popstate", syncLocation);
+    return () => window.removeEventListener("popstate", syncLocation);
+  }, [syncLocation]);
 
   const handleNavigate = useCallback((event, category, page) => {
     event.preventDefault();
-    router.push(catalogHref(category, page));
-  }, [router]);
-
-  const handleCreated = useCallback((pizza) => {
-    setManagementMessage(`«${pizza.name}» добавлена в меню.`);
-    if (activeCategory === "Все" || pizza.category === activeCategory) {
-      const destination = catalogHref(activeCategory, Math.ceil((totalItems + 1) / PAGE_SIZE));
-      const currentLocation = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-      if (currentLocation === destination) router.refresh();
-      else router.push(destination);
-    } else {
-      router.refresh();
-    }
-  }, [activeCategory, router, totalItems]);
-
-  const handleDelete = useCallback(async (pizza) => {
-    if (!window.confirm(`Удалить пиццу «${pizza.name}» из меню?`)) return;
-    setDeletingId(pizza.id);
-    setManagementMessage("");
-
-    try {
-      const response = await fetch(`/api/pizzas/${pizza.id}`, { method: "DELETE" });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Не удалось удалить пиццу.");
-
-      setManagementMessage(result.warning || `«${pizza.name}» удалена из меню.`);
-      router.refresh();
-    } catch (error) {
-      setManagementMessage(error instanceof Error ? error.message : "Не удалось удалить пиццу.");
-    } finally {
-      setDeletingId(null);
-    }
-  }, [router]);
+    window.history.pushState(null, "", catalogHref(category, page));
+    setActiveCategory(category);
+    setSelectedPage(page);
+    document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   return (
     <>
@@ -74,9 +66,7 @@ export function ProductCatalog({
         <div className="menu-toolbar">
           <nav className="category-tabs" aria-label="Категории пиццы">
             {categories.map((category) => {
-              const href = category === "Все"
-                ? catalogHref("Все", 1)
-                : catalogHref(category, 1);
+              const href = catalogHref(category, 1);
               return (
                 <a
                   key={category}
@@ -90,37 +80,10 @@ export function ProductCatalog({
               );
             })}
           </nav>
-          <button
-            className={`management-toggle${managementOpen ? " active" : ""}`}
-            type="button"
-            aria-expanded={managementOpen}
-            aria-controls="pizza-management"
-            onClick={() => {
-              setManagementOpen((open) => !open);
-              setManagementMessage("");
-            }}
-          >
-            {managementOpen ? "Закрыть управление" : "Управление меню"}
-          </button>
         </div>
-        {managementOpen && (
-          <section className="pizza-management" id="pizza-management" aria-label="Управление меню">
-            <h3>Добавить пиццу</h3>
-            <PizzaCreateForm categories={categories} onCreated={handleCreated} />
-            {managementMessage && <p className="management-message" role="status">{managementMessage}</p>}
-          </section>
-        )}
-        {pizzas.length ? (
+        {visiblePizzas.length ? (
           <div className="pizza-grid">
-            {pizzas.map((pizza) => (
-              <ProductCard
-                key={pizza.id}
-                pizza={pizza}
-                managementMode={managementOpen}
-                deleting={deletingId === pizza.id}
-                onDelete={handleDelete}
-              />
-            ))}
+            {visiblePizzas.map((pizza) => <ProductCard key={pizza.id} pizza={pizza} />)}
           </div>
         ) : (
           <p className="empty-category">В этой категории пока нет пиццы.</p>

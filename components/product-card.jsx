@@ -6,7 +6,7 @@ import { getPizzaImageSrc } from "../lib/pizza-image";
 
 const formatPrice = (price) => `${new Intl.NumberFormat("ru-RU").format(price)} ₽`;
 
-export function ProductCard({ pizza, managementMode = false, deleting = false, onDelete }) {
+export function ProductCard({ pizza }) {
   const { addToCart } = useStore();
 
   return (
@@ -16,18 +16,8 @@ export function ProductCard({ pizza, managementMode = false, deleting = false, o
       </div>
       <div className="pizza-info">
         <div className="pizza-title-row"><h3>{pizza.name}</h3><span className="pizza-price">{formatPrice(pizza.price)}</span></div>
-        <div className={`pizza-card-bottom${managementMode ? " manage-mode" : ""}`}>
+        <div className="pizza-card-bottom">
           <button type="button" onClick={() => addToCart(pizza)}>Добавить <b><Plus size={13} aria-hidden="true" /></b></button>
-          {managementMode && (
-            <button
-              className="pizza-remove-button"
-              type="button"
-              disabled={deleting}
-              onClick={() => onDelete(pizza)}
-            >
-              {deleting ? "Удаление…" : "Удалить"}
-            </button>
-          )}
         </div>
       </div>
     </article>
