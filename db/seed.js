@@ -8,7 +8,7 @@ const { pizzas } = require("./schema");
 const products = [
   ["Маргарита", "Овощная", 590, "/pizzas/margherita.jpg"],
   ["Пепперони", "Мясная", 690, "/pizzas/pepperoni.jpg"],
-  ["Четыре сыра", "Сырная", 750, "/pizzas/four-cheese.jpg"],
+  ["Четыре сыра", "Сырная", 750, "/pizzas/formaggi.jpg"],
   ["Грибная", "Овощная", 650, "/pizzas/mushroom.jpg"],
   ["Ветчина и грибы", "Мясная", 720, "/pizzas/ham-mushroom.jpg"],
   ["Овощная", "Овощная", 620, "/pizzas/vegetable.jpg"],
@@ -30,7 +30,7 @@ const products = [
   ["Капричоза", "Авторская", 740, "/pizzas/capricciosa.jpg"],
   ["Песто", "Овощная", 710, "/pizzas/pesto.jpg"],
   ["Груша и горгонзола", "Сырная", 820, "/pizzas/pear-gorgonzola.jpg"],
-  ["Формаджи", "Сырная", 770, "/pizzas/formaggi.jpg"],
+  ["Формаджи", "Сырная", 770, "/pizzas/four-cheese.jpg"],
   ["Пикантная", "Мясная", 760, "/pizzas/spicy.jpg"],
   ["Сицилийская", "Классика", 720, "/pizzas/sicilian.jpg"],
 ].map(([name, category, price, image], index) => ({
